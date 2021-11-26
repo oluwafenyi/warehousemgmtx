@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Stock Update{% endblock %}
+
+{% block page_title %}{{ item.name }} Stock Update{% endblock %}
+
+{% block content %}
+    <p>Current Stock: {{ item.stock }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Add to Stock</button>
+    </form>
+{% endblock %}

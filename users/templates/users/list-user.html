@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Worker List{% endblock %}
+
+{% block page_title %}Worker List{% endblock %}
+
+{% block content %}
+{% if perms.users.can_create_workers %}
+    <a href="{% url 'worker-creation' %}">Create New Worker</a>
+{% endif %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in object_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ item.full_name }}</td>
+                <td>{{ item.email }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

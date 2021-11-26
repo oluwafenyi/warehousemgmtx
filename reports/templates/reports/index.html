@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Report{% endblock %}
+
+{% block head %}
+<script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+{% endblock %}
+
+{% block page_title %}Report{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-success">Generate Report</button>
+</form>
+<br>
+<h4>Stock Audit</h4>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">From Value</th>
+            <th scope="col">To Value</th>
+            <th scope="col">Logged By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in stock_audit %}
+            <tr>
+                <th scope="row">{{ item.created_at }}</th>
+                <td>{{ item.from_value }}</td>
+                <td>{{ item.to_value }}</td>
+                <td>{{ item.created_by.full_name }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<h4>Revenue Audit</h4>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">From Value</th>
+            <th scope="col">To Value</th>
+            <th scope="col">Logged By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in transaction_audit %}
+            <tr>
+                <th scope="row">{{ item.created_at }}</th>
+                <td>{{ item.from_value }}</td>
+                <td>{{ item.to_value }}</td>
+                <td>{{ item.created_by.full_name }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

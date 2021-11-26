@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Stock Update{% endblock %}
+
+{% block page_title %}{{ item.name }} Shipping Items{% endblock %}
+
+{% block content %}
+    <p>Current Stock: {{ item.stock }}</p>
+    <p>Current Value: {{ item.selling_price }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <p>Revenue expected from Shipping: <span id="xRevenue">0</span></p>
+        <button type="submit" class="btn btn-success">Ship</button>
+    </form>
+
+    <script>
+        var quantity = document.getElementById("id_quantity");
+        var expectedRevenueSpan = document.getElementById("xRevenue");
+        quantity.addEventListener("input", function (e) {
+            expectedRevenueSpan.textContent = e.target.value * {{ item.selling_price }}
+        });
+    </script>
+{% endblock %}

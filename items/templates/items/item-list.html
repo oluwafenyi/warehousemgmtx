@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Item List{% endblock %}
+
+{% block head %}
+<script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+<style>
+    a.dashboard-link {
+        text-decoration: none !important;
+        padding-right: 20px;
+        font-size: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}Items{% endblock %}
+
+{% block content %}
+{% if perms.items.can_administer_item %}
+    <a href="{% url 'create-item' %}" class="dashboard-link">Add New Item</a>
+{% endif %}
+{% if perms.users.can_create_workers %}
+    <a href="{% url 'worker-list' %}" class="dashboard-link">Worker Management</a>
+{% endif %}
+{% if perms.items.can_view_stats %}
+    <a href="{% url 'reports' %}" class="dashboard-link">Financial Report</a>
+    <hr>
+    <h4>Total Item Revenue: {{ total_revenue }}</h4>
+{% endif %}
+<br>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Selling Price</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in object_list %}
+            <tr>
+                <th scope="row">{{ item.id }}</th>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.stock }}</td>
+                <td>{{ item.selling_price }}</td>
+                <td>{{ item.updated_at }}</td>
+                <td><a href="{{ item.get_add_stock_url }}"><i class="fas fa-plus-circle"></i></a></td>
+                <td><a href="{{ item.get_ship_stock_url }}"><i class="fas fa-truck"></i></a></td>
+                {% if perms.items.can_administer_item %}
+                    <td><a href="{{ item.get_edit_url }}"><i class="fas fa-edit"></i></a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
